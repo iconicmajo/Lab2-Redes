@@ -5,7 +5,7 @@ import sys
 import socket
 import selectors
 import types
-import bitarray
+from bitarray import bitarray
 
 bta = bitarray()
 #investigar que hace
@@ -15,14 +15,22 @@ sel = selectors.DefaultSelector()
 port = input('Ingrese puerto: ')
 host = input('Ingrese host: ')
 nc = input('Ingrese numero de coneccion: ')
-msj = input('Ingrese mensaje: ')
+msj_ascii  = input('Ingrese mensaje: ')
 
 #aqui vamos a convertir a ASCII el mensaje
-msj = ascii(msj)
-msj_ascii = bytes(msj, 'ASCII')
-print(msj_ascii)
-bta.frombytes(b'%msj_ascii')
-print(str(bta))
+#msj_ascii = ascii(msj_ascii)
+#msj = bytes(msj_ascii, 'ASCII')
+#print(msj)
+#bta.frombytes(b'%msj_ascii')
+#print(str(bta))
+
+arr = bytes(msj_ascii, 'utf-8')
+print("hola")
+#arr2 = bytes(msj_ascii, 'ascii')
+
+print(str(arr))
+bta.frombytes(arr)
+print(bta)
 
 #Funcion para hacer la conecxion con el server
 def conection(host, port, nc):
