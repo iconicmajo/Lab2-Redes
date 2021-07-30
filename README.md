@@ -7,4 +7,4 @@ Laboratorio de Detección y Corrección de errores
 - Comprender los elementos de una arquitectura en capas.
 
 ## How to use it
-- no sabemosjsjsj
+- *En proceso*
