@@ -10,25 +10,39 @@ import selectors
 import types
 from bitarray import bitarray
 
-bta = bitarray()
+outb = bitarray()
 #investigar que hace
 sel = selectors.DefaultSelector()
 
 
 #ingreso de data
-port = input('Ingrese puerto: ')  
+port = int(input('Ingrese puerto: '))
 host = input('Ingrese host: ')
-nc = input('Ingrese numero de conexion: ')
+nc = int(input('Ingrese numero de conexion: '))
 msj  = input('Ingrese mensaje: ')
 
-# El mensaje se parsea a bytes 
+msj = ascii(msj)
+#mensaje = mensaje.encode("ascii", "ignore")
+msj_ascii = bytes(msj, 'ASCII')
+msjs = [msj_ascii]
+
+""" El mensaje se parsea a bytes 
 msj_ascii = bytes(msj, 'utf-8')
 msjs = [msj_ascii]
-print(msjs)
+print(msjs) """
 #print(str(msj_ascii))
 # El mensaje en bytes se convierte a un bitarray (arreglo de boolean values) 
-bta.frombytes(msj_ascii)
-print(bta)
+# ESTO VA EN EL SERVER
+#outb.frombytes(msj_ascii)
+#print(outb)
+
+"""a_bytes = bytes(msj, "ascii")
+msjs = [a_bytes]
+#print(a_bytes)
+outb.frombytes(a_bytes)
+binary_converted=(' '.join(["{0:b}".format(x) for x in a_bytes]))
+print("The Binary Representation is:", binary_converted) """
+
 
 #Funciones para hacer la conexion con el server
 
@@ -47,7 +61,6 @@ def connection(host, port, nc):
         full_msj=sum(len(m) for m in msjs),
         received_total=0,
         messages=list(msjs),
-        msj_binary = bta,
         outb=b"",
     )
     sel.register(sock, events, data=data)
@@ -58,7 +71,7 @@ def server_connection(key, mask):
     if mask & selectors.EVENT_READ:
         received_data = sock.recv(1024)  
         if received_data:
-            print("La conexion con id ", data.connection_id, "recibio:", repr(received_data),)
+            print("La conexion con id ", data.connection_id, "recibio:", received_data)
             data.received_total += len(received_data)
         if not received_data or data.received_total == data.full_msj:
             print("Cerrando conexion ", data.connection_id)
@@ -68,13 +81,13 @@ def server_connection(key, mask):
         if not data.outb and data.messages:
             data.outb = data.messages.pop(0)
         if data.outb:
-            print("Enviando ", repr(data.outb), " -> ", data.msj_binary,  "a la conexion", data.connection_id)
+            print("Enviando ", repr(data.outb), " -> ",  "a la conexion", data.connection_id)
             sent = sock.send(data.outb)  
             data.outb = data.outb[sent:]
 
 
 # Se verifica que toda la info haya sido ingresada para crear la conexion
-if port != "" or  host != "" or nc != "" or msj  != "":
+if port == "" or  host == "" or nc == "" or msj  == "":
     print("Invalid data!\n")
     print("Ruta: <host: {}> <port: {}> <connections: {}>".format(host, port, nc))
     sys.exit(1)
@@ -92,7 +105,7 @@ try:
                 
         if not sel.get_map():
             break
-        
+
 except KeyboardInterrupt:
     print("caught keyboard interrupt, exiting")
 finally:
