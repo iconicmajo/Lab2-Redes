@@ -10,8 +10,8 @@ import selectors
 import types
 from bitarray import bitarray
 
-outb = bitarray()
-#investigar que hace
+ba = bitarray()
+
 sel = selectors.DefaultSelector()
 
 
@@ -21,27 +21,11 @@ host = input('Ingrese host: ')
 nc = int(input('Ingrese numero de conexion: '))
 msj  = input('Ingrese mensaje: ')
 
+# se convierte el mensaje a binary
 msj = ascii(msj)
-#mensaje = mensaje.encode("ascii", "ignore")
 msj_ascii = bytes(msj, 'ASCII')
 msjs = [msj_ascii]
-
-""" El mensaje se parsea a bytes 
-msj_ascii = bytes(msj, 'utf-8')
-msjs = [msj_ascii]
-print(msjs) """
-#print(str(msj_ascii))
-# El mensaje en bytes se convierte a un bitarray (arreglo de boolean values) 
-# ESTO VA EN EL SERVER
-#outb.frombytes(msj_ascii)
-#print(outb)
-
-"""a_bytes = bytes(msj, "ascii")
-msjs = [a_bytes]
-#print(a_bytes)
-outb.frombytes(a_bytes)
-binary_converted=(' '.join(["{0:b}".format(x) for x in a_bytes]))
-print("The Binary Representation is:", binary_converted) """
+ba.frombytes(msj_ascii)
 
 
 #Funciones para hacer la conexion con el server
@@ -93,7 +77,6 @@ if port == "" or  host == "" or nc == "" or msj  == "":
     sys.exit(1)
 
 print("Ruta: <host: {}> <port: {}> <connections: {}>".format(host, port, nc))
-#host, port, num_conns = sys.argv[1:4]
 connection(host, int(port), int(nc))
 
 try:
