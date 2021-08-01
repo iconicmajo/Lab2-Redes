@@ -2,6 +2,10 @@
 LABORATORIO 2 - REDES
 Maria Jose Castro 181202
 Paula Camila Gonzalez 18398
+
+FUENTES DE CONSULTA:
+https://www.geeksforgeeks.org/hamming-code-implementation-in-python/
+https://github.com/danielmuthama/Hamming-Code/blob/master/hammingcode.py
 """
 # chequea el numero de paridad de bits en la generacion del hamming code
 # devuelve el numero de bits con paridad requeridos para hacerles append a una palabra con el tamaño dado 
